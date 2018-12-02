@@ -537,6 +537,12 @@ static void on_timer(int value)
       }  
     }
       
+   //Ako je doslo do kraja igre a igrac nije unisito Reichstag   
+   if(cepelin_alive == 1 && gate_counter == 20) {
+     if(gate_animation_parameter > 6) {
+       cepelin_alive = 0;
+    }
+  }
    // Kolizija sa BOSS PEMEN-om   
    if(fire_boss == 1 && gate_counter == 20) {
      if(boss_z >= -3.5 && boss_z <= 2) {
@@ -588,7 +594,7 @@ static void on_timer(int value)
    
     // Azuriraj parametre vratnica (nivoa) ako ona prodje iza cepelina
     // Prelazak na sledeci nivo
-    if(gate_animation_parameter >=1){
+    if(gate_animation_parameter >=1 && gate_counter != 20){
       gate_animation_parameter = -71;
       gate_counter++;
       int i;
