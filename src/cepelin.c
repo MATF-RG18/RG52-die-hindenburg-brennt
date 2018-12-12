@@ -57,6 +57,16 @@ int direction_change_indicator[4];
 float explosion_animation_parameter = 0;
 
 /*
+ * Parametar koji odgovara brzini pusenja cepelina
+ */
+float smoke_expansion_parameter = 0;
+
+/*
+ * Parametar koji govori o kretanju dima oko cepelina
+ */
+float smoke_movement_parameter = 0;
+
+/*
  * Indikator koji govori o tome da li treba da se zapocne rotacija nazad u pocetni
  * polozaj, vrednosti tih uglova rotacije oko x-ose(yang) i y-ose(xang) i 
  * za koliko se u svakom taktu inkrementira ili dekrementira data vrednost ugla
@@ -112,6 +122,37 @@ void draw_cepelin()
     glRotatef(xang, 0,1,0);
     glRotatef(yang, 1,0,0);
     glTranslatef(x_curr - size / 2, y_curr - size / 2, 0.5);
+    
+    
+    //Iscrtavanje dima
+    glPushMatrix();
+    
+      glRotatef(-xang, 0,1,0);
+      glRotatef(-yang, 1,0,0);
+      glTranslatef(smoke_movement_parameter,0,0);
+      draw_cepelin_smoke();
+      
+      
+    
+    glPopMatrix();
+    
+    glPushMatrix();
+    
+      glRotatef(-xang, 0,1,0);
+      glRotatef(-yang, 1,0,0);
+      glTranslatef(0.9,0,0);
+      draw_cepelin_smoke();
+      
+    glPopMatrix();
+    
+    glPushMatrix();
+    
+      glRotatef(-xang, 0,1,0);
+      glRotatef(-yang, 1,0,0);
+      glTranslatef(-smoke_movement_parameter,0,0);
+      draw_cepelin_smoke();
+      
+    glPopMatrix();
     // Iscrtavanje elipsoida
     DrawEllipsoid(10, 10, 0.5,0.5,1);
     // Iscrtavanje putnickog dela
@@ -147,7 +188,8 @@ void draw_cepelin()
  * Funckija za iscrtavanje eksplozije kada cepelin izgori (bilo usled kolizije 
  * ili kada izgori usled projektila)
  */
-void draw_explosion() {
+void draw_explosion() 
+{
   glPushMatrix();
     /*
      * Eksplozija se transllira na poziciju cepelina, skalira se u skladu 
@@ -182,3 +224,48 @@ void draw_explosion() {
   glPopMatrix();
 }
 
+void draw_cepelin_smoke() 
+{
+  //Iskljucujem osvetljenje posto za dim koristim boje bez osvetljenja
+    glDisable(GL_LIGHT0);
+    glDisable(GL_LIGHTING);
+        
+    //Iscrtavanje dima koji izlazi iz cepelina
+        glPushMatrix();
+            
+            glColor3f(1,1,1);
+            
+            glTranslatef(cepelin_x-0.7, cepelin_y - 0.5 + smoke_movement_parameter, cepelin_z+0.2);
+            glScalef(smoke_expansion_parameter/2, smoke_expansion_parameter/3, smoke_expansion_parameter/0.5);
+            
+            glutSolidSphere(0.5,10,10);
+            
+        glPopMatrix();
+        
+        
+        glPushMatrix();
+            
+            glColor3f(1,1,1);
+            
+            glTranslatef(cepelin_x, cepelin_y - 0.5 + smoke_movement_parameter, cepelin_z+0.2);
+            glScalef(smoke_expansion_parameter, smoke_expansion_parameter, smoke_expansion_parameter);
+            
+            glutWireSphere(0.5,10,10);
+            
+        glPopMatrix();
+        
+        glPushMatrix();
+            
+            glColor3f(1,1,1);
+            
+            glTranslatef(cepelin_x, cepelin_y - 0.5 + smoke_movement_parameter, cepelin_z+0.2);
+            glScalef(smoke_expansion_parameter, smoke_expansion_parameter, smoke_expansion_parameter);
+            
+            glScalef(0.4,0.8,0.1);
+            glutWireCube(0.4);
+            
+        glPopMatrix();
+    //Ukljucujem svetlo za dalja moguca iscrtavanja    
+    glEnable(GL_LIGHT0);
+    glEnable(GL_LIGHTING);
+}

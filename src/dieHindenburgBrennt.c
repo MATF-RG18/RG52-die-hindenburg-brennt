@@ -67,8 +67,11 @@ int main(int argc, char** argv){
 void global_param_init()
 {
   
+    smoke_expansion_parameter = 0;
+    smoke_movement_parameter = 0;
+  
     explosion_animation_parameter = 0;
-    gate_counter = 0;
+    gate_counter = 19;
   
     cepelin_life_parameter = 0;
     cepelin_on_fire = 0;
@@ -561,6 +564,14 @@ static void on_timer(int value)
      animation_ongoing = 0;
    }
    
+   // Ako je parametar za kretanje dima prebacio 3, resetuj vrednosti 
+   if(smoke_movement_parameter >= 3) {
+     smoke_movement_parameter = 0;
+     smoke_expansion_parameter = 0;
+   }
+   
+   
+   
    // Ako je cepelin ziv i ako animacija i dalje traje, uveceava se parametar 
    // eksplozije
    if(cepelin_alive == 0 && animation_ongoing == 1) {
@@ -575,9 +586,15 @@ static void on_timer(int value)
    }
    
    // Ako cepelin gori, uvecaj parametar koji broji koliko je cepelinu ostalo 
-   // da zivi pre nego sto izgori
-   if(cepelin_on_fire) {
-     cepelin_life_parameter += 0.15;   
+   // da zivi pre nego sto izgori, parametar koji odredjuje smer kretanja dima
+   // koji potice iz cepelina, kao i parametar za skaliranje velicine oblaka dima
+   if(cepelin_on_fire && cepelin_alive) {
+     
+     cepelin_life_parameter += 0.15;
+     smoke_movement_parameter += 0.09;
+     smoke_expansion_parameter += 0.05;
+     
+     
    }  
       
       
@@ -713,7 +730,8 @@ static void on_timer(int value)
       smoke_animation_parameter[7] += 0.15;
       
     }
-      
+    
+    
       
     glutPostRedisplay();
     if(animation_ongoing){  
@@ -794,9 +812,13 @@ static void on_display(void)
             
             glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse_coeffs);
             
+            
+            
     
         }
         draw_cepelin();
+        
+        
         
         glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse_coeffs);
         
@@ -813,9 +835,11 @@ static void on_display(void)
         cepelin_z = matrix[14];
         
         
+        
     glPopMatrix();
     
-   
+    
+    
     /*
      * Ako je smo dosli do poslednjeg nivoa, iscrtaj Reichstag
      */

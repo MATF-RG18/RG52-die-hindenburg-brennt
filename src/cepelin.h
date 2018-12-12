@@ -4,6 +4,7 @@
 
 void draw_cepelin();
 void draw_explosion();
+void draw_cepelin_smoke();
 
 const float size;
 
@@ -11,6 +12,9 @@ extern float x_curr, y_curr;
 extern float v_x, v_y;
 
 extern float explosion_animation_parameter;
+
+extern float smoke_expansion_parameter;
+extern float smoke_movement_parameter;
 
 extern int movement_indicator_cx;
 extern int movement_indicator_cy;
