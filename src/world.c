@@ -7,6 +7,11 @@
 int window_width;
 int window_height;
 
+// parametar animacije poda
+double tile_animation_parameter;
+
+//parametar animacije ukrasa sa strane
+double world_blocks_animation_parameter;
 
 /* 
  * Fukncija za iscrtavanje sveta
@@ -44,10 +49,10 @@ void draw_world()
     //Iscrtavaju se poprecne linije
     for(i = -70; i<3; i+=2){
       glBegin(GL_POLYGON);
-          glVertex3f(7, -2.98, i-0.05);
-          glVertex3f(-7, -2.98, i-0.05);
-          glVertex3f(-7, -2.98, i+0.05);
-          glVertex3f(7, -2.98, i+0.05);
+          glVertex3f(7, -2.98, tile_animation_parameter+i-0.05);
+          glVertex3f(-7, -2.98, tile_animation_parameter+i-0.05);
+          glVertex3f(-7, -2.98, tile_animation_parameter+i+0.05);
+          glVertex3f(7, -2.98, tile_animation_parameter+i+0.05);
       glEnd();
     }
   glPopMatrix();
@@ -55,11 +60,13 @@ void draw_world()
   glEnable(GL_LIGHT0);
   
   /*
-   * Iscrtavaju se ukrasi sa lev idesne strane
+   * Iscrtavaju se ukrasi sa leve i desne strane
    */
+  
+  //leva strana
   for(i = -70; i<3; i+=2){
     glPushMatrix();
-      glTranslatef(-6.5, 2.7, i);
+      glTranslatef(-6.5, 2.7, world_blocks_animation_parameter+i);
       glScalef(0.5,0.5,1);
       glutSolidCube(1);
     glPopMatrix();
@@ -67,7 +74,7 @@ void draw_world()
   
   for(i = -69; i<3; i+=2){
     glPushMatrix();
-      glTranslatef(-6.5, 1.7, i);
+      glTranslatef(-6.5, 1.7, world_blocks_animation_parameter+i);
       glScalef(0.5,0.5,1);
       glutSolidCube(1);
     glPopMatrix();
@@ -75,15 +82,16 @@ void draw_world()
   
   for(i = -70; i<3; i+=2){
     glPushMatrix();
-      glTranslatef(-6.5, 0.7, i);
+      glTranslatef(-6.5, 0.7, world_blocks_animation_parameter+i);
       glScalef(0.5,0.5,1);
       glutSolidCube(1);
     glPopMatrix();
   }
   
+  // desna strana
   for(i = -70; i<3; i+=2){
     glPushMatrix();
-      glTranslatef(6.5, 2.7, i);
+      glTranslatef(6.5, 2.7, world_blocks_animation_parameter+i);
       glScalef(0.5,0.5,1);
       glutSolidCube(1);
     glPopMatrix();
@@ -91,7 +99,7 @@ void draw_world()
   
   for(i = -69; i<3; i+=2){
     glPushMatrix();
-      glTranslatef(6.5, 1.7, i);
+      glTranslatef(6.5, 1.7, world_blocks_animation_parameter+i);
       glScalef(0.5,0.5,1);
       glutSolidCube(1);
     glPopMatrix();
@@ -99,7 +107,7 @@ void draw_world()
   
   for(i = -70; i<3; i+=2){
     glPushMatrix();
-      glTranslatef(6.5, 0.7, i);
+      glTranslatef(6.5, 0.7, world_blocks_animation_parameter+i);
       glScalef(0.5,0.5,1);
       glutSolidCube(1);
     glPopMatrix();

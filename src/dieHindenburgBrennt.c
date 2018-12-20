@@ -67,11 +67,14 @@ int main(int argc, char** argv){
 void global_param_init()
 {
   
+    tile_animation_parameter = 0;  
+    world_blocks_animation_parameter = 0;
+  
     smoke_expansion_parameter = 0;
     smoke_movement_parameter = 0;
   
     explosion_animation_parameter = 0;
-    gate_counter = 19;
+    gate_counter = 0;
   
     cepelin_life_parameter = 0;
     cepelin_on_fire = 0;
@@ -551,7 +554,7 @@ static void on_timer(int value)
      if(boss_z >= -3.5 && boss_z <= 2) {
        if(boss_y >= cepelin_y - 2 && boss_y <= cepelin_y + 2){
          if(boss_x >= cepelin_x - 2 && boss_x <= cepelin_x + 2) {
-           // Ako dodje do kolizije cepelim odmah eksplodira
+           // Ako dodje do kolizije cepelin odmah eksplodira
            cepelin_alive = 0;
            fire_boss = 0;
          }
@@ -725,6 +728,30 @@ static void on_timer(int value)
       }
     }
     
+    
+    /*
+     * Ako je cepelin ziv, azuriraj parametre za animaciju poda i ukrasa sa strane
+     */
+    
+    if(cepelin_alive) {
+      
+      // Azuriranje parametara animacije poda
+      tile_animation_parameter += 0.08;
+      
+      // Resetovanje parametra ako je linija otisla van scene
+      if(tile_animation_parameter >= 2) {
+        tile_animation_parameter = 0;
+      }
+      
+      // Azuriranje parametara animacije ukrasa sa strane
+      world_blocks_animation_parameter += 0.08;
+      
+      // Resetovanje parametra ako je ukras otisao van scene
+      if(world_blocks_animation_parameter >= 2) {
+        world_blocks_animation_parameter = 0;
+      }
+      
+    }
     
     if(fire_boss == 1 && gate_counter == 20) {
       smoke_animation_parameter[7] += 0.15;
